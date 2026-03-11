@@ -3,6 +3,7 @@
 
 from psychopy import visual, core, event, gui
 import os
+import sys
 import random
 import csv
 import configparser
@@ -129,14 +130,14 @@ def select_config():
         config_files = find_config_files()
 
         if not config_files:
-            print("Brak plików konfiguracyjnych. Tworzę domyślne...")
+            print("Brak plikow konfiguracyjnych. Tworze domyslne...")
             create_default_configs()
             config_files = find_config_files()
 
-        choices = config_files + ['[Własna konfiguracja]']
+        choices = config_files + ['[Wlasna konfiguracja]']
 
-        dlg = gui.Dlg(title='Wybór konfiguracji')
-        dlg.addField('Wybierz konfigurację:', choices=choices)
+        dlg = gui.Dlg(title='Eksperyment - Uwaga wzrokowa')
+        dlg.addField('Konfiguracja:', choices=choices)
         data = dlg.show()
 
         if not dlg.OK:
@@ -144,12 +145,11 @@ def select_config():
 
         selected = data[0]
 
-        if selected == '[Własna konfiguracja]':
+        if selected == '[Wlasna konfiguracja]':
             result = create_custom_config()
             if result is None:
                 continue
-            else:
-                return result
+            return result
         else:
             return os.path.join(CONFIG_DIR, selected)
 
@@ -294,7 +294,6 @@ def load_config(config_file):
 
     def fix_icon_path(p):
         p = p.strip()
-        # jesli sciezka nie zawiera folderu, dodaj icons/
         if p and os.sep not in p and '/' not in p:
             p = 'icons/' + p
         return p
@@ -497,9 +496,6 @@ def create_trial_list():
 
 
 def create_training_list():
-    """
-    Tworzy próby treningowe – równomiernie z każdego z 4 warunków.
-    """
     n_per_condition = max(1, CFG['n_training_trials'] // 4)
     n_per_target = max(1, n_per_condition // 2)
     trials = []
@@ -517,7 +513,7 @@ def create_training_list():
 def run_trial(trial_params, trial_number, block_number, is_practice=False):
     target_shape = trial_params['target']
     load = trial_params.get('load', 'high')          # 'low' lub 'high'
-    icon_type = trial_params.get('icon_type', 'social')  # 'social' lub 'nestle'
+    icon_type = trial_params.get('icon_type', 'social')  # 'social' lub 'nonsocial'
 
     # --- Liczba kształtów ---
     # Niskie obciążenie: 3 kształty (1 target + 2 dystraktory)
@@ -656,8 +652,7 @@ def run_trial(trial_params, trial_number, block_number, is_practice=False):
         keys = event.waitKeys(keyList=['space', 'escape'])
         if 'escape' in keys:
             save_and_quit()
-
-    # --- Padding kolumn kształtów (zawsze 6 pól dla spójności CSV) ---
+            
     def safe_get(lst, idx):
         return lst[idx] if idx < len(lst) else ''
 
@@ -667,7 +662,7 @@ def run_trial(trial_params, trial_number, block_number, is_practice=False):
         'numer_bloku':      block_number,
         'czy_trening':      1 if is_practice else 0,
         'load_condition':   'LL' if load == 'low' else 'HL',
-        'icon_category':    icon_type,           # 'social' lub 'nestle'
+        'icon_category':    icon_type,           # 'social' lub 'nonsocial'
         'target':           target_shape,
         'ikona':            icon_filename if icon_filename else '',
         'n_ksztaltow':      n_shapes,
@@ -925,7 +920,6 @@ show_instruction(instruction_after_training)
 
 # ==================== WŁAŚCIWY EKSPERYMENT ====================
 # 320 prob losowo przemieszanych, kazdy z 4 warunkow dokladnie 80 razy.
-# Podzielone na CFG['n_blocks'] blokow z pauza miedzy nimi.
 all_trials = create_trial_list()
 n_blocks = CFG['n_blocks']
 trials_per_block = len(all_trials) // n_blocks
