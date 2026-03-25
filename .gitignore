@@ -1,7 +1,14 @@
-./DS_Store
+.DS_Store
+.idea
 
-./data/*
-./plots/*
+data/*
+!data/.gitkeep
+
+plots/*
+!plots/.gitkeep
+
+results/*
+!results/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

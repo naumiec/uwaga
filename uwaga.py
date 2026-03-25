@@ -36,7 +36,7 @@ screen_height = 1080
 
 [WERSJA]
 # Wersja A: klawisz A = trojkat, klawisz L = romb
-# Wersja B: klawisz L = trojkat, klawisz A = romb
+# Wersja B: klawisz L = trojkat, klawisz A = rombe
 wersja = A
 
 [IKONA]
@@ -130,7 +130,7 @@ def select_config():
         config_files = find_config_files()
 
         if not config_files:
-            print("Brak plikow konfiguracyjnych. Tworze domyslne...")
+            print("Brak plikow konfiguracyjnych. Tworzę domyślne...")
             create_default_configs()
             config_files = find_config_files()
 
