@@ -149,9 +149,9 @@ def select_config():
             result = create_custom_config()
             if result is None:
                 continue
-            return result
+            return result, True
         else:
-            return os.path.join(CONFIG_DIR, selected)
+            return os.path.join(CONFIG_DIR, selected), False
 
 
 def create_custom_config():
@@ -305,7 +305,7 @@ def load_config(config_file):
 
 
 # ==================== GŁÓWNY PROGRAM ====================
-config_file = select_config()
+config_file, config_is_custom = select_config()
 CFG = load_config(config_file)
 
 print(f"Wczytano konfigurację: {config_file}")
@@ -317,8 +317,8 @@ print(f"Próby eksperymentalne: {CFG['n_experimental_trials']} ({CFG['n_blocks']
 
 # ==================== SPRAWDZENIE ISTNIEJĄCYCH ID ====================
 def check_existing_id(participant_id):
-    os.makedirs('data', exist_ok=True)
-    existing_files = glob.glob(f'data/result_{participant_id}_*.csv')
+    os.makedirs('results', exist_ok=True)
+    existing_files = glob.glob(f'results/result_{participant_id}_*.csv')
     return len(existing_files) > 0
 
 
@@ -697,23 +697,28 @@ results = []
 
 def save_data():
     if results:
-        os.makedirs('data', exist_ok=True)
+        os.makedirs('results', exist_ok=True)
+        os.makedirs('data/summaries', exist_ok=True)
+        os.makedirs('data/configs', exist_ok=True)
 
         timestamp = exp_info['timestamp_start']
         participant_id = exp_info['ID badanego']
 
-        filename_csv = f"data/result_{participant_id}_{timestamp}.csv"
+        filename_csv = f"results/result_{participant_id}_{timestamp}.csv"
         with open(filename_csv, 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.DictWriter(f, fieldnames=results[0].keys(), delimiter=';')
             writer.writeheader()
             writer.writerows(results)
         print(f"Wyniki zapisane: {filename_csv}")
 
-        config_filename = f"data/config_{participant_id}_{timestamp}.ini"
-        shutil.copy(config_file, config_filename)
-        print(f"Konfiguracja zapisana: {config_filename}")
+        if config_is_custom:
+            config_filename = f"data/configs/config_{participant_id}_{timestamp}.ini"
+            shutil.copy(config_file, config_filename)
+            print(f"Konfiguracja zapisana: {config_filename}")
+        else:
+            print(f"Konfiguracja standardowa — pomijam zapis: {config_file}")
 
-        summary_filename = f"data/summary_{participant_id}_{timestamp}.txt"
+        summary_filename = f"data/summaries/summary_{participant_id}_{timestamp}.txt"
 
         experimental_trials = [r for r in results if r['czy_trening'] == 0]
         correct_trials = [r for r in experimental_trials if r['czy_poprawna'] == 1]
