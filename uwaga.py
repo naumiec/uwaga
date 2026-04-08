@@ -46,14 +46,13 @@ icon_size = 0.2
 [KSZTALTY]
 use_colors = False
 unique_shapes = True
-target_size = 0.06
-distractor_size = 0.06
+target_size = 0.08
+distractor_size = 0.08
 fixation_size = 0.008
-radius = 0.25
-n_shapes = 6
+radius = 0.38
 
 [CZASY]
-fixation_time = 1.0
+fixation_time = 0.5
 stimulus_time = 0.1
 max_response_time = 2.0
 feedback_time = 0.5
@@ -88,19 +87,18 @@ wersja = A
 
 [IKONA]
 icon_in_center = True
-icon_size = 0.9
+icon_size = 0.2
 
 [KSZTALTY]
 use_colors = False
 unique_shapes = True
-target_size = 0.06
-distractor_size = 0.06
+target_size = 0.08
+distractor_size = 0.08
 fixation_size = 0.008
-radius = 0.25
-n_shapes = 6
+radius = 0.38
 
 [CZASY]
-fixation_time = 1.0
+fixation_time = 0.5
 stimulus_time = 0.1
 max_response_time = 2.0
 feedback_time = 0.5
