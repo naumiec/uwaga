@@ -1,12 +1,12 @@
 ifeq ($(OS),Windows_NT)
     PYTHON := python
-    VENV_PYTHON := .venv/Scripts/python.exe
-    VENV_PIP := .venv/Scripts/pip.exe
+    VENV_PYTHON := venv/Scripts/python.exe
+    VENV_PIP := venv/Scripts/pip.exe
     RM := rmdir /s /q
 else
     PYTHON := python3
-    VENV_PYTHON := .venv/bin/python
-    VENV_PIP := .venv/bin/pip
+    VENV_PYTHON := venv/bin/python
+    VENV_PIP := venv/bin/pip
     RM := rm -rf
 endif
 
@@ -19,7 +19,7 @@ help:
 	@echo "make clean   — usuwa srodowisko wirtualne"
 
 setup:
-	$(PYTHON) -m venv .venv
+	$(PYTHON) -m venv venv
 	$(VENV_PIP) install --upgrade pip
 	$(VENV_PIP) install -r requirements.txt
 
@@ -48,4 +48,4 @@ freeze:
 	$(VENV_PIP) freeze > requirements.txt
 
 clean:
-	$(RM) .venv
+	$(RM) venv

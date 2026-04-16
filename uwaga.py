@@ -41,7 +41,7 @@ wersja = A
 
 [IKONA]
 icon_in_center = True
-icon_size = 0.2
+icon_size = 0.1
 
 [KSZTALTY]
 use_colors = False
@@ -87,7 +87,7 @@ wersja = A
 
 [IKONA]
 icon_in_center = True
-icon_size = 0.2
+icon_size = 0.1
 
 [KSZTALTY]
 use_colors = False
