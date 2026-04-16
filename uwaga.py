@@ -324,6 +324,7 @@ def check_existing_id(participant_id):
 while True:
     exp_info = {
         'ID badanego': '',
+        'ID badacza': '',
         'Wiek': '',
         'Płeć': ['Kobieta', 'Mężczyzna', 'Inna', 'Nie chcę podawać'],
         'System telefonu': ['iOS', 'Android', 'Inny'],
@@ -668,13 +669,14 @@ def run_trial(trial_params, trial_number, block_number, is_practice=False):
 
     return {
         'id_badanego':      exp_info['ID badanego'],
+        'id_badacza':       exp_info['ID badacza'],
         'numer_proby':      trial_number,
         'numer_bloku':      block_number,
         'czy_trening':      1 if is_practice else 0,
         'load_condition':   'LL' if load == 'low' else 'HL',
         'icon_category':    icon_type,           # 'social' lub 'nonsocial'
         'target':           target_shape,
-        'ikona':            icon_filename if icon_filename else '',
+        'ikona':            os.path.basename(icon_filename) if icon_filename else '',
         'n_ksztaltow':      n_shapes,
         'target_pozycja':   target_idx,
         'ksztalt_0': safe_get(shapes_data, 0), 'kolor_0': safe_get(colors_data, 0),
